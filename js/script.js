@@ -6,7 +6,13 @@ const createElements = (arr) => {
 const loadData = () => {
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
         .then(res => res.json())
-        .then(data => getData(data.data))
+        .then(data => {
+            allIssues = data.data
+
+            getData(allIssues)
+
+            updateCount(allIssues.length)
+        })
 
 }
 
@@ -19,7 +25,7 @@ const getData = (datas) => {
                 <div class="card border-t-4 ${data.status === 'open' ? 'border-[#00A96E]' : 'border-[#A855F7]'} rounded-md h-full shadow-lg p-4 space-y-3">
                 <div class="flex justify-between">
                     <img src="${data.status === 'open' ? './assets/Open-Status.png' : './assets/Closed- Status .png'}" alt="">
-                    <p class="badge text-[12px] ${data.priority === 'high' ? 'bg-red-200 text-[#EF4444]' : data.priority === 'medium' ? 'bg-[#FFF6D1] text-[#F59E0B]' : 'bg-gray-200 text-gray-600' }">${data.priority}</p>
+                    <p class="badge text-[12px] ${data.priority === 'high' ? 'bg-red-200 text-[#EF4444]' : data.priority === 'medium' ? 'bg-[#FFF6D1] text-[#F59E0B]' : 'bg-gray-200 text-gray-600'}">${data.priority}</p>
                 </div>
                 <h2 class="text-[14px] font-semibold">${data.title}</h2>
                 <p class="line-clamp-2 text-[12px] text-[#64748B]">${data.description}</p>
@@ -29,16 +35,32 @@ const getData = (datas) => {
                 <hr class="text-gray-300">
                   <div class="flex justify-between">
                     <p class="text-[#64748B] text-[12px]">#${data.id}  by ${data.author}</p>
-                    <p class="text-[#64748B] text-[12px]">${data.createdAt}</p>
+                    <p class="text-[#64748B] text-[12px]">${new Date(data.createdAt).toLocaleDateString()}</p>
                 </div>
                 <div class="flex justify-between">
                     <p class="text-[#64748B] text-[12px]">assignee: ${data.assignee}</p>
-                    <p class="text-[#64748B] text-[12px]">${data.updatedAt}</p>
+                    <p class="text-[#64748B] text-[12px]">${new Date(data.updatedAt).toLocaleDateString()}</p>
                 </div>
             </div>
         `
         cardContainer.appendChild(newdiv)
     })
 }
+
+const updateCount = (count) => {
+
+    document.getElementById("issue-count").innerText = count
+
+}
+
+const filterIssues = (status, event) => {
+    document.querySelectorAll(".btn").forEach(btn => btn.classList.remove("btn-primary"));
+    event.target.classList.add("btn-primary");
+
+    const filtered = status === "all" ? allIssues : allIssues.filter(issue => issue.status === status);
+
+    getData(filtered);
+    updateCount(filtered.length);
+};
 
 loadData()
