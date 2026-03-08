@@ -40,18 +40,18 @@
                             <path d="m21 21-4.3-4.3"></path>
                         </g>
                     </svg>
-                    <input type="search" placeholder="Search issues..." required />
+                    <input id="search-value" type="search" placeholder="Search issues..." required />
                 </label>
             </div>
-            <button class="btn btn-primary join-item">+ New Issue</button>
+            <button id="search-btn" class="btn btn-primary join-item">+ New Issue</button>
         </div>
     </header>
     <hr class="text-[#aaafaf]">
     <section class="w-10/12 mx-auto mt-[50px] space-y-4">
         <div class="flex gap-2 bg-white rounded-lg shadow-lg p-5">
-            <button onclick="filterIssues('all',event)" class="btn w-20 btn-primary">All</button>
-            <button onclick="filterIssues('open',event)" class="btn w-20">Open</button>
-            <button onclick="filterIssues('closed',event)" class="btn w-20">Closed</button>
+            <button onclick="filterIssues('all',event)" class="btn-all btn w-20 btn-primary">All</button>
+            <button onclick="filterIssues('open',event)" class="btn-all btn w-20">Open</button>
+            <button onclick="filterIssues('closed',event)" class="btn-all btn w-20">Closed</button>
         </div>
         <div class="flex justify-between bg-white p-3 rounded-md shadow-lg">
             <div class="flex gap-3 items-center">

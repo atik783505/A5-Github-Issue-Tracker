@@ -107,23 +107,35 @@ const updateCount = (count) => {
 }
 
 const filterIssues = (status, event) => {
-    document.querySelectorAll(".btn").forEach(btn => btn.classList.remove("btn-primary"));
+    document.querySelectorAll(".btn-all").forEach(btn => btn.classList.remove("btn-primary"));
     event.target.classList.add("btn-primary");
 
     toggleSpinner(true)
 
     setTimeout(() => {
 
-    const filtered = status === "all"
-        ? allIssues
-        : allIssues.filter(issue => issue.status === status);
+        const filtered = status === "all"
+            ? allIssues
+            : allIssues.filter(issue => issue.status === status);
 
-    getData(filtered);
-    updateCount(filtered.length);
+        getData(filtered);
+        updateCount(filtered.length);
 
-    toggleSpinner(false)
+        toggleSpinner(false)
 
     }, 300)
 };
+
+document.getElementById('search-btn').addEventListener("click", () => {
+    const inputSearch = document.getElementById('search-value').value.trim().toLowerCase()
+    toggleSpinner(true)
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${inputSearch}`)
+        .then(res => res.json())
+        .then(data => {
+            getData(data.data)
+            updateCount(data.data.length)
+            toggleSpinner(false)
+        })
+})
 
 loadData()
