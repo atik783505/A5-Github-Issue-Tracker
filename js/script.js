@@ -1,6 +1,24 @@
+let allIssues = []
+
+
 const createElements = (arr) => {
     const newHtml = arr.map((el) => `<span class="badge bg-amber-200 text-[12px]">${el}</span>`)
     return (newHtml.join(" "))
+}
+
+const toggleSpinner = (isLoading) => {
+
+    const spinner = document.getElementById("loading-spinner")
+    const cards = document.getElementById("card-container")
+
+    if (isLoading) {
+        spinner.classList.remove("hidden")
+        cards.classList.add("hidden")
+    }
+    else {
+        spinner.classList.add("hidden")
+        cards.classList.remove("hidden")
+    }
 }
 
 const loadData = () => {
@@ -43,7 +61,7 @@ const getdetail = (card) => {
                     </div>
                     <div>
                         <p class="text-[12px] text-[#64748B]">Priority:</p>
-                        <p class="badge ${card.priority === 'high' ? 'bg-red-500' : card.priority === 'medium'? 'bg-amber-500' : 'bg-gray-500' } text-white text-[12px] rounded-full">${card.priority}</p>
+                        <p class="badge ${card.priority === 'high' ? 'bg-red-500' : card.priority === 'medium' ? 'bg-amber-500' : 'bg-gray-500'} text-white text-[12px] rounded-full">${card.priority}</p>
                     </div>
                 </div>
     `
@@ -92,10 +110,20 @@ const filterIssues = (status, event) => {
     document.querySelectorAll(".btn").forEach(btn => btn.classList.remove("btn-primary"));
     event.target.classList.add("btn-primary");
 
-    const filtered = status === "all" ? allIssues : allIssues.filter(issue => issue.status === status);
+    toggleSpinner(true)
+
+    setTimeout(() => {
+
+    const filtered = status === "all"
+        ? allIssues
+        : allIssues.filter(issue => issue.status === status);
 
     getData(filtered);
     updateCount(filtered.length);
+
+    toggleSpinner(false)
+
+    }, 300)
 };
 
 loadData()
