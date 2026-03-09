@@ -1,25 +1,24 @@
 let allIssues = []
 
 
-const createElements = (arr) => {
-    const newHtml = arr.map((el) => `<span class="badge bg-amber-200 text-[12px]">${el}</span>`)
-    return (newHtml.join(" "))
-}
-
-const toggleSpinner = (isLoading) => {
-
-    const spinner = document.getElementById("loading-spinner")
-    const cards = document.getElementById("card-container")
-
-    if (isLoading) {
-        spinner.classList.remove("hidden")
-        cards.classList.add("hidden")
-    }
-    else {
-        spinner.classList.add("hidden")
-        cards.classList.remove("hidden")
-    }
-}
+const createElements = (arr) => 
+    arr.map(el => `
+        <span class="${
+            el === "bug" ? "bg-red-200 text-red-500 border-red-300" :
+            el === "help wanted" ? "bg-orange-200 text-orange-500 border-orange-300" :
+            el === "enhancement" ? "bg-green-200 text-green-500 border-green-300" :
+            el === "good first issue" ? "bg-blue-200 text-blue-500 border-blue-300" :
+            "bg-purple-200 text-purple-500 border-purple-300"
+        } border rounded-full whitespace-nowrap font-semibold px-2 py-1 capitalize">
+            <h4 class="text-xs">${
+                el === "bug" ? '<i class="fa-solid fa-bug"></i>' :
+                el === "help wanted" ? '<i class="fa-solid fa-life-ring"></i>' :
+                el === "enhancement" ? '<i class="fa-solid fa-wand-magic-sparkles"></i>' :
+                el === "good first issue" ? '<i class="fa-solid fa-star"></i>' :
+                '<i class="fa-solid fa-book"></i>'
+            } ${el}</h4>
+        </span>
+    `).join("");
 
 const loadData = () => {
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
