@@ -1,9 +1,24 @@
 let allIssues = []
 
 
+const toggleSpinner = (isLoading) => {
+
+    const spinner = document.getElementById("loading-spinner")
+    const cards = document.getElementById("card-container")
+
+    if (isLoading) {
+        spinner.classList.remove("hidden")
+        cards.classList.add("hidden")
+    }
+    else {
+        spinner.classList.add("hidden")
+        cards.classList.remove("hidden")
+    }
+}
+
 const createElements = (arr) => 
     arr.map(el => `
-        <span class="${
+        <div class="${
             el === "bug" ? "bg-red-200 text-red-500 border-red-300" :
             el === "help wanted" ? "bg-orange-200 text-orange-500 border-orange-300" :
             el === "enhancement" ? "bg-green-200 text-green-500 border-green-300" :
@@ -17,7 +32,7 @@ const createElements = (arr) =>
                 el === "good first issue" ? '<i class="fa-solid fa-star"></i>' :
                 '<i class="fa-solid fa-book"></i>'
             } ${el}</h4>
-        </span>
+        </div>
     `).join("");
 
 const loadData = () => {
